@@ -1,0 +1,36 @@
+{"Lessons":
+  [
+    {
+      "ID": "0",
+      "Comment": "(formal)",
+      "Meaning": ["I"],
+      "Kanji": "私",
+      "Kana": "わたし",
+      "Lesson": "1"
+    },
+    {
+      "ID": "1",
+      "Comment": "(formal)", 
+      "Meaning": ["that person", " he", " she"], 
+      "Kanji": "あの人", 
+      "Kana": "あのひと",
+      "Lesson": "1"
+    },
+    {
+      "ID": "2",
+      "Comment": "(formal)",
+      "Meaning": ["I"],
+      "Kanji": "私",
+      "Kana": "わたし",
+      "Lesson": "2"
+    },
+    {
+      "ID": "3",
+      "Comment": "(formal)", 
+      "Meaning": ["that person", " he", " she"], 
+      "Kanji": "あの人", 
+      "Kana": "あのひと",
+      "Lesson": "2"
+    }
+  ]
+}

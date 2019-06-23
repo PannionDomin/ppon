@@ -18,7 +18,7 @@ class Card:
         # Kana, e.g. はくじん
         self.kana = "NONE"
         # Meaning, e.g. caucasian
-        self.meaning = "NONE"
+        self.meaning = []
         # Mnemo, e.g. White man = caucasian!
         self.mnemo = "NONE"
         # Lesson of the kanji: the difficulty, level or whatever you wanna call
@@ -88,7 +88,7 @@ class Card:
          
     # Checks if the supplied meaning matches the card
     def check_meaning(self, meaning):
-        if self.meaning == meaning:
+        if meaning.decode('utf8') in [x.decode('UTF8') for x in self.meaning]:
             return True
         elif meaning in self.otherSimilar:
             print "Correct, but this card is for meaning \"", self.meaning, "\"."

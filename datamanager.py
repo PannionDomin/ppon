@@ -4,6 +4,7 @@
 # save the data, e.g. save the progress in the current profile.
 import io
 import datetime
+import json
 from card import Card
 
 # TODO:
@@ -38,12 +39,11 @@ class DataManager:
     # Sets the card file
     def set_card_file(self, cardFile, cards):
         try:
-            fl = io.open("cards/"+cardFile+".dat", "r", encoding='utf-8')
+            with open("cards/"+cardFile) as json_file:
+                data = json.load(json_file)
         except:
-            print "Could not open file cards/" + cardFile + ".dat, exitting"
+            print "Could not open file cards/" + cardFile + ", exitting"
             quit()
-        lines = fl.readlines()
-        fl.close()
         
         # Set the cards!
         # TODO: This must be rewritten. Base the datatype on strings separated
@@ -51,16 +51,16 @@ class DataManager:
         #   kanji : 女の人 ; kana : おんなのひと ; meaning : woman
         #   then make the use of set_{kanji,kana,meaning} based on teh above if
         #   existing. That will make the set_type work properly too.
-        self.cardFileLen = len(lines)
-        for line in lines:
-            ll = line.strip().split(" ")
+        self.cardFileLen = len(data["Lessons"])
+
+        for crd in data["Lessons"]:
             cards.append(Card())
-            cards[-1].set_ID(ll[0])
-            cards[-1].set_kanji(ll[1])
-            cards[-1].set_kana(ll[2])
-            cards[-1].set_meaning(ll[3])
+            cards[-1].set_ID(crd['ID'])
+            cards[-1].set_kanji(crd['Kanji'])
+            cards[-1].set_kana(crd['Kana'])
+            cards[-1].set_meaning(crd['Meaning'])
             cards[-1].set_type()
-         
+        
         self.cardFile = cardFile
         self.card = cards
       
@@ -111,9 +111,6 @@ class DataManager:
         for i in range(len(self.card)):
             fl.write("%i %s %i %s %s\n" %(int(self.card[i].ID), self.card[i].kanji.encode('utf8'), self.card[i].level, self.card[i].dateLast, self.card[i].dateNext))
 
-
-
-      
     def set_results(ID, results):
         for i in range(len(ID)):
             for c in range(len(self.card)):

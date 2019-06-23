@@ -149,7 +149,9 @@ class srs:
                             activecards[combinations[i][0]], answer, combinations_arr[i], combinations_left)
                 elif combinations[i][1] == 3:
                     # Meaning to kanji
-                    print activecards[combinations[i][0]].meaning
+#                    print activecards[combinations[i][0]].meaning
+                    print ", ".join([x.encode('UTF8') for x in activecards[combinations[i][0]].meaning])
+            
                     answer  = raw_input("Kanji: ").decode('utf-8')
                     iscorrect, combinations_arr[i], combinations_left = self.card_check(3, 
                             activecards[combinations[i][0]], answer, combinations_arr[i], combinations_left)
@@ -197,7 +199,7 @@ class srs:
             real = activecard.kana
         elif combo == 3:
             real = activecard.kanji
-        if answer == real: 
+        if answer in real: 
             print "Correct!"
             # One less combination to iterate through!
             combinations_left -= 1
@@ -210,7 +212,10 @@ class srs:
             raw_input()
             return True, combinations_arr, combinations_left
         else:
-            print "Wrong! Your answer: ", answer, "should be: ", real
+            if combo == 0 or combo == 2:
+                print "Wrong! Your answer: ", answer, "should be: ", ", ".join([x.encode('UTF8') for x in real])
+            else:
+                print "Wrong! Your answer: ", answer, "should be: ", real
             combinations_arr = 1
             raw_input()
             return False, combinations_arr, combinations_left

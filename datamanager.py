@@ -21,13 +21,17 @@ class DataManager:
 
     # Inits
     def __init__(self,cards):
+        # Card file location
         self.cardFile = "NONE"
+        # The number of cards
         self.cardFileLen = 0
+        # Profile file location
         self.profileFile = "NONE"
+        # The number of saved cards in the profile
         self.profileFileLen = 0
-        self.allSet = False
+        # Cards
         self.card = []
-        self.card_data = []
+        # Initialise!
         self.user_init(cards)
         
     # Sets the card and profile files
@@ -36,7 +40,8 @@ class DataManager:
         self.set_card_file(raw_input("Card file name: "),cards)
         self.set_profile_file(raw_input("Profile name: "))
         
-    # Sets the card file
+    # Sets the card file. We will read json format, which will make it easier
+    # to add/manipulate more data inputs
     def set_card_file(self, cardFile, cards):
         try:
             with open("cards/"+cardFile) as json_file:
@@ -44,27 +49,29 @@ class DataManager:
         except:
             print "Could not open file cards/" + cardFile + ", exitting"
             quit()
-        
-        # Set the cards!
-        # TODO: This must be rewritten. Base the datatype on strings separated
-        #   with :, e.g.
-        #   kanji : 女の人 ; kana : おんなのひと ; meaning : woman
-        #   then make the use of set_{kanji,kana,meaning} based on teh above if
-        #   existing. That will make the set_type work properly too.
+        # Set the number of cards
         self.cardFileLen = len(data["Lessons"])
-
+        # Iterate through cards and fill the data into memory
         for crd in data["Lessons"]:
+            # Append a new card object
             cards.append(Card())
             cards[-1].set_ID(crd['ID'])
             cards[-1].set_kanji(crd['Kanji'])
             cards[-1].set_kana(crd['Kana'])
             cards[-1].set_meaning(crd['Meaning'])
+            cards[-1].set_lesson(crd['Lesson'])
             cards[-1].set_type()
-        
+        # Set the card file location
         self.cardFile = cardFile
+        # Save the cards as an internal data object
         self.card = cards
       
     # Sets the profile file
+    # TODO: multiple profile/cards, read jmal
+    #       * Make a folder per profile. Each profile-folder shoud contain one
+    #         file per card-file
+    #       * Read and write json files for the profile, it will save time in
+    #         long run...
     def set_profile_file(self, profileFile):
         try:
             fl = io.open("profiles/"+profileFile+".dat", "r", encoding='utf-8')
@@ -106,11 +113,16 @@ class DataManager:
     # really mean overwrite!  I will (at some point) change this to only update
     # the lines/entries that were changed from last time, but for now we will
     # completely overwrite the file.
+    # TODO: Make sure we only update the entries that matter, not all...
     def update_profile_file(self):
         fl = open("profiles/"+self.profileFile+".dat", "w")#, encoding='utf-8')
         for i in range(len(self.card)):
             fl.write("%i %s %i %s %s\n" %(int(self.card[i].ID), self.card[i].kanji.encode('utf8'), self.card[i].level, self.card[i].dateLast, self.card[i].dateNext))
 
+    # Sets the results from lessons: it loads the lesson results per
+    # correspoding card ID. It will then assign a new "level" of the card and a
+    # new lesson date
+    # TODO: Complete as explained above
     def set_results(ID, results):
         for i in range(len(ID)):
             for c in range(len(self.card)):
@@ -122,6 +134,10 @@ class DataManager:
                     card.dateLast = time
 
     # Make a new profile, given the card was already provided
+    # TODO: Create a new folder per profile, and a saved progress file for each
+    # card input file inside that folder. E.g.m if we have card "minna" and
+    # "humanjapanese", then profile should be a folder with two files
+    # correspoding to these inputs.
     def make_profile(self):
         filename = raw_input("Enter profile name: ")
         print filename

@@ -50,8 +50,8 @@ class Card:
         self.meaning = meaning
     def set_mnemo(self,mnemo):
         self.mnemo = mnemo
-    def std_lesson(self,lesson):
-        self.lesson = lesson
+    def set_lesson(self,lesson):
+        self.lesson = int(lesson)
     def set_level(self, level):
         self.level = level
     def activate(self):
@@ -115,6 +115,7 @@ class Card:
         print "Kanji    : ", self.kanji
         print "Kana     : ", self.kana
         print "Meaning  : ", self.meaning
+        print "Lesson   : ", self.lesson
         print "Level    : ", self.level
         print "Active   : ", self.active
         print "Type     : ", self.type

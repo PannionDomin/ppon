@@ -70,7 +70,7 @@ class srs:
     def run_srs(self, cards, datamanager, reviewtype):
         if self.reviewtype == "onelevel":
             print "Will start review of level"
-            self.review_level(cards,datamanager)
+            self.review_lesson(cards,datamanager)
         else:
             print "Oh dear, seems like wrong review type... " , reviewtype
 
@@ -83,9 +83,9 @@ class srs:
     # Review will always come before new lessons, it should not be possible to
     # do a lesson when there are outstanding reviews
 
-    def review_level(self, cards, datamanager):
-        level = raw_input("Level to review: ")
-        activecards = self.get_card_combinations(level, cards, datamanager)
+    def review_lesson(self, cards, datamanager):
+        lesson = raw_input("Lesson to review: ")
+        activecards = self.get_card_combinations(lesson, cards, datamanager)
         self.review(cards,datamanager,activecards)
 
     # This should be able to take an array of cards and run a review for these.
@@ -180,7 +180,7 @@ class srs:
             else:
                 print "ERROR:srs:process_results"
         for i in range(len(activecards)):
-            IDs[i] = activecards.ID
+            IDs[i] = activecards[i].ID
         dm.take_results(IDs, results)
 
     # Checks if the review questions was answered correctly. Returns the answer
@@ -222,10 +222,12 @@ class srs:
 
     # Return cards active for the review.
     # TODO: implement based on last review.
-    def get_card_combinations(self,level,cards,datamanager):
+    def get_card_combinations(self,lesson,cards,datamanager):
         activecards = []
-        level = int(level)
+        lesson = int(lesson)
+        print "will iterate through lesson:",lesson
         for i in range(len(cards)):
-            if(cards[i].level == level):
+            if(cards[i].lesson == lesson):
                 activecards.append(cards[i])
+                print "Appenfing a card"
         return activecards
